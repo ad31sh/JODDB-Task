@@ -133,5 +133,53 @@ public IActionResult Create(User user)
             var random = new Random();
             return new string(Enumerable.Repeat(characters, 8).Select(s => s[random.Next(s.Length)]).ToArray());
         }
+         // GET: Edit User
+        public IActionResult Edit(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();  // Return 404 if user is not found
+            }
+            return View(user);
+        }
+
+        // POST: Edit User
+        [HttpPost]
+        public IActionResult Edit(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Users.Update(user);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(user);
+        }
+
+        // GET: Delete Confirmation Page
+        public IActionResult Delete(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();  // Return 404 if user is not found
+            }
+            return View(user);
+        }
+
+        // POST: Delete User
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();  // Return 404 if user is not found
+            }
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

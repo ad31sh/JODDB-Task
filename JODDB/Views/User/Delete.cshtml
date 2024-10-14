@@ -1,0 +1,17 @@
+@model JODDB.Models.User
+
+<h2>Delete User</h2>
+
+<div>
+    <h4>Are you sure you want to delete this user?</h4>
+    <div>
+        <strong>@Model.Name</strong> (<em>@Model.Email</em>)<br />
+        <span>@Model.MobileNumber</span>
+    </div>
+    <br />
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
