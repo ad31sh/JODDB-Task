@@ -1,0 +1,27 @@
+@model IEnumerable<JODDB.Models.User>
+
+<h2>User List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile Number</th>
+            <th>Password</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td><img src="@user.Photo" alt="Photo" width="50"/></td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.MobileNumber</td>
+                <td>@user.Password</td>
+            </tr>
+        }
+    </tbody>
+</table>
