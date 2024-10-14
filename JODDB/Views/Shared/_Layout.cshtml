@@ -13,9 +13,13 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">JODDB</a>
-                 <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+               <div class="collapse navbar-collapse">
+        
+
+        <ul class="navbar-nav ml-auto">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item">
                 <a class="nav-link" href="/User">User List</a>
             </li>
             <li class="nav-item">
@@ -24,9 +28,21 @@
             <li class="nav-item">
                 <a class="nav-link" href="/User/Import">Import Users</a>
             </li>
+                <li class="nav-item">
+                    <span class="navbar-text">Welcome, @User.Identity.Name!</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Login/Logout">Logout</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="/Login">Login</a>
+                </li>
+            }
         </ul>
     </div>
-               
             </div>
         </nav>
     </header>

@@ -3,9 +3,11 @@ using JODDB.Data;
 using JODDB.Models;
 using System.Linq;
 using OfficeOpenXml;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JODDB.Controllers
 {
+     [Authorize]  // This will require users to be logged in
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
@@ -15,7 +17,6 @@ namespace JODDB.Controllers
             _context = context;
         }
 
-        // GET: User List
         public IActionResult Index()
         {
             var users = _context.Users.ToList();
