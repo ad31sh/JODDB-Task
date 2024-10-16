@@ -45,7 +45,7 @@
           "dependencies": {
             "EPPlus": {
               "target": "Package",
-              "version": "[7.4.1, )"
+              "version": "[5.8.0, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
