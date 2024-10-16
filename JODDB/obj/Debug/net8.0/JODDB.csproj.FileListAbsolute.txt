@@ -139,12 +139,8 @@ C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\obj\Debug\net8.0\JODDB.pdb
 C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\obj\Debug\net8.0\JODDB.genruntimeconfig.cache
 C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\obj\Debug\net8.0\ref\JODDB.dll
 C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\EPPlus.dll
-C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\EPPlus.Interfaces.dll
-C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\EPPlus.System.Drawing.dll
-C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
-C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
 C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
-C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
-C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
-C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\System.Xml.XPath.XmlDocument.dll
+C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+C:\Users\adels\OneDrive\Desktop\JODDB-Task\JODDB\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
