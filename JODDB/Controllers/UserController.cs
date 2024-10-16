@@ -43,143 +43,107 @@ public IActionResult Create(User user)
     }
     return View(user);
 }
- // GET: Excel Import Page
+  // GET: Import Users View
         public IActionResult Import()
         {
             return View();
         }
 
-         // POST: Handle Excel File Upload and Import Users
-        [HttpPost]
-        public IActionResult Import(IFormFile excelFile)
+       [HttpPost]
+public async Task<IActionResult> Import(IFormFile file)
+{
+    if (file == null || file.Length == 0)
+    {
+        ModelState.AddModelError(string.Empty, "Please upload a valid Excel file.");
+        return View();
+    }
+
+    var users = new List<User>();
+    var invalidRows = 0;
+
+    using (var stream = new MemoryStream())
+    {
+        await file.CopyToAsync(stream);
+
+        using (var package = new ExcelPackage(stream))
         {
-            if (excelFile != null && excelFile.Length > 0)
+            var worksheet = package.Workbook.Worksheets[0];  // First worksheet
+            var rowCount = worksheet.Dimension.Rows;
+
+            for (int row = 2; row <= rowCount; row++)
             {
-                try
+                var name = worksheet.Cells[row, 2].Text;     // Name (Column B)
+                var email = worksheet.Cells[row, 3].Text;    // Email (Column C)
+                var mobileNo = worksheet.Cells[row, 4].Text; // MobileNo (Column D)
+
+                // Validate the data
+                if (!IsValidName(name) || !IsValidEmail(email) || string.IsNullOrWhiteSpace(mobileNo))
                 {
-                    using (var stream = new MemoryStream())
-                    {
-                        excelFile.CopyTo(stream);
-                        using (var package = new ExcelPackage(stream))
-                        {
-                            ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
-                            if (worksheet != null)
-                            {
-                                int rowCount = worksheet.Dimension.Rows;
-                                int batchSize = 500;
-                                List<User> usersBatch = new List<User>();
-
-                                for (int row = 2; row <= rowCount; row++) // Start from row 2 to skip the header
-                                {
-                                    var name = worksheet.Cells[row, 1].Value?.ToString().Trim();
-                                    var email = worksheet.Cells[row, 2].Value?.ToString().Trim();
-                                    var mobile = worksheet.Cells[row, 3].Value?.ToString().Trim();
-
-                                    if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(email))
-                                    {
-                                        var password = GeneratePassword();
-
-                                        var user = new User
-                                        {
-                                            Name = name,
-                                            Email = email,
-                                            MobileNumber = mobile,
-                                            Password = password
-                                        };
-
-                                        usersBatch.Add(user);
-
-                                        // Save batch of users when the batch size is reached
-                                        if (usersBatch.Count >= batchSize)
-                                        {
-                                            _context.Users.AddRange(usersBatch);
-                                            _context.SaveChanges();
-                                            usersBatch.Clear();
-                                        }
-                    Console.WriteLine($"Name: {name}, Email: {email}, Mobile: {mobile}");
+                    invalidRows++;
+                    continue;  // Skip invalid rows
                 }
-                                }
 
-                                // Save any remaining users after the loop
-                                if (usersBatch.Count > 0)
-                                {
-                                    _context.Users.AddRange(usersBatch);
-                                    _context.SaveChanges();
-                                }
-                            }
-                        }
-                    }
+                // Generate random password
+                var password = GeneratePassword();
 
-                    return RedirectToAction("Index"); // Redirect back to user list after successful import
-                }
-                catch (Exception ex)
+                var user = new User
                 {
-                    ModelState.AddModelError("", "An error occurred while processing the file: " + ex.Message);
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("", "Please select a valid Excel file.");
-            }
+                    Name = name,
+                    Email = email,
+                    MobileNumber = mobileNo,
+                    Password = password,  // Assuming you have a Password field in your User model
+                    Photo = "default.png"  // Placeholder for Photo
+                };
 
-            return View(); // Return to the import page if there was an error
-        }
-
-        // Helper function to generate random passwords
-        private string GeneratePassword()
-        {
-            // You can improve this logic to generate stronger passwords
-            var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(characters, 8).Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-         // GET: Edit User
-        public IActionResult Edit(int id)
-        {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
-            if (user == null)
-            {
-                return NotFound();  // Return 404 if user is not found
+                users.Add(user);
             }
-            return View(user);
         }
+    }
 
-        // POST: Edit User
-        [HttpPost]
-        public IActionResult Edit(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Users.Update(user);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(user);
-        }
+    // Bulk insert
+    if (users.Any())
+    {
+        await _context.Users.AddRangeAsync(users);
+        await _context.SaveChangesAsync();
 
-        // GET: Delete Confirmation Page
-        public IActionResult Delete(int id)
-        {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
-            if (user == null)
-            {
-                return NotFound();  // Return 404 if user is not found
-            }
-            return View(user);
-        }
+        ViewBag.Message = $"{users.Count} users imported successfully!";
+    }
+    else
+    {
+        ViewBag.Message = "No valid users were imported.";
+    }
 
-        // POST: Delete User
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
-            if (user == null)
-            {
-                return NotFound();  // Return 404 if user is not found
-            }
-            _context.Users.Remove(user);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+    ViewBag.InvalidRows = invalidRows;
+    return View();
+}
+
+// Helper function to generate random passwords
+private string GeneratePassword()
+{
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var random = new Random();
+    return new string(Enumerable.Repeat(characters, 8).Select(s => s[random.Next(s.Length)]).ToArray());
+}
+
+// Helper function to validate name
+private bool IsValidName(string name)
+{
+    return !string.IsNullOrWhiteSpace(name);
+}
+
+// Helper function to validate email format
+private bool IsValidEmail(string email)
+{
+    try
+    {
+        var addr = new System.Net.Mail.MailAddress(email);
+        return addr.Address == email;
+    }
+    catch
+    {
+        return false;
+    }
+}
+        
     }
 }

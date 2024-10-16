@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JODDB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea37cdc799adba607fc393219c4f31b765dddf14")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6197f03f109f08f4ea0408313a761fc5bdf767b6")]
 [assembly: System.Reflection.AssemblyProductAttribute("JODDB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JODDB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

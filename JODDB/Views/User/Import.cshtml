@@ -1,18 +1,20 @@
 @{
-    ViewData["Title"] = "Import Users from Excel";
+    ViewBag.Title = "Import Users";
 }
 
-<h2>Import Users from Excel</h2>
+<h2>Import Users</h2>
 
 <form asp-action="Import" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="excelFile">Select Excel File</label>
-        <input type="file" class="form-control-file" id="excelFile" name="excelFile" required />
+        <label for="file">Select Excel File</label>
+        <input type="file" class="form-control" name="file" id="file" required />
     </div>
     <button type="submit" class="btn btn-primary">Upload and Import</button>
 </form>
 
-@if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
+@if (ViewBag.Message != null)
 {
-    <div class="text-danger">@ViewData["ErrorMessage"]</div>
+    <div class="alert alert-success mt-3">
+        @ViewBag.Message
+    </div>
 }
